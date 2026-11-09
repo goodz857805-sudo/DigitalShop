@@ -65,7 +65,28 @@ DigitalShop/
 
 ## 二、怎么安装
 
-### 方式一：项目级安装（推荐）
+### 方式一：从 GitHub 克隆（推荐）
+
+仓库地址：<https://github.com/goodz857805-sudo/DigitalShop>（仓库根目录下就是 `DigitalShop/`）。
+在**目标项目根目录**执行：
+
+```powershell
+git clone --depth 1 https://github.com/goodz857805-sudo/DigitalShop.git "$env:TEMP\DigitalShop-skill"
+New-Item -ItemType Directory -Force ".qoder\skills" | Out-Null
+Copy-Item "$env:TEMP\DigitalShop-skill\DigitalShop" ".qoder\skills\" -Recurse -Force
+```
+
+执行完确认 `.qoder/skills/DigitalShop/SKILL.md` 存在，然后**新开一个对话**让 skill 加载。
+
+**更新**：已经 clone 过的话，先 `git -C "$env:TEMP\DigitalShop-skill" pull` 拉取最新内容，再重跑上面最后一条 `Copy-Item` 覆盖旧文件（首次安装则三条命令按顺序执行）；想确认拉到哪个版本：
+
+```powershell
+git -C "$env:TEMP\DigitalShop-skill" log --oneline -3
+```
+
+**不想用命令行**：浏览器打开仓库 → 绿色 `Code` → `Download ZIP` → 解压后把里面的 `DigitalShop` 文件夹整个放进项目的 `.qoder/skills/`。
+
+### 方式二：手动拷贝（项目级）
 
 把整个 `DigitalShop` 目录放到目标项目的 skills 目录下：
 
@@ -86,11 +107,11 @@ DigitalShop/
 - **不要改动 `SKILL.md` 的 frontmatter**（`name` / `description` 决定什么时候被命中）。
 - `references/` 必须和 `SKILL.md` 一起放进去，缺了它会找不到规范与图标。
 
-### 方式二：跨项目使用
+### 方式三：跨项目使用
 
 把 `DigitalShop` 目录放进 Qoder 的用户级 skills 目录（在 Qoder 的 Skills 设置里能看到你本机的实际路径），这样所有项目都能命中。若不确定路径，也可以直接用 IDE 的 skill 创建 / 导入入口，指向这个目录。
 
-### 方式三：打包分发给别人
+### 方式四：打包分发给别人
 
 1. 压缩 `DigitalShop/` 目录，**保证压缩包根目录就是 `SKILL.md`**（不要多套一层 `DigitalShop/` 文件夹）。
 2. 确认包内包含 `references/icons/`（约 500 KB，492 个文件），这是唯一体积大头。
@@ -181,6 +202,7 @@ A：直接说「按规范评审这个页面」或「解释第 9 节图标规则�
 | 项 | 值 |
 |---|---|
 | 版本 | 0.7.0 |
+| 仓库 | <https://github.com/goodz857805-sudo/DigitalShop> |
 | 规范规模 | 74 章 / 64 个组件条目 / 5 个页面模板 / 492 枚图标 |
 | 上游 | [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `skills/redesign-skill`（MIT），复用范围与哈希见 `UPSTREAM.md` |
 | 许可 | 上游正文 MIT，见 `LICENSE-upstream.txt`；本 skill 增补部分随本目录分发 |
