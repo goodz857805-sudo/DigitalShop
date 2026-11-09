@@ -1,0 +1,897 @@
+/* ==========================================================================
+   数字化门店设计系统 · Design Tokens
+   --------------------------------------------------------------------------
+   唯一事实来源（Figma）：[B]数字化门店_3组件库PC端
+   fileKey: XGIf7PEfWNEA7WTxxDwJ8b
+
+   01 颜色        5312:24891
+   02 字体        5312:24708
+   03 间距与栅格  5312:24481
+   04 圆角        5312:24374
+   05 阴影        5312:24219
+   06 层级 Z-index 5312:24051
+
+   颜色与文字变量导出（原样留存，未改动）：
+     references/color-mode-1.css
+     references/text-style-variables-mode-1.css
+
+   本文件是派生产物。原始导出为准；要改值，先更新原导出再重新生成。
+   Figma 变量名一律保留原样（--gray-gray-1、--chart-chart-1），不做重命名或翻译，
+   以便和设计侧、代码侧三方对得上。本次派生但 Figma 未建变量的部分，
+   统一用 --space-* / --radius-* / --shadow-* / --z-* / --grid-* 命名，并在段落里注明。
+
+   相对原始导出的修正（共 3 处，见各段注释）：
+     1. 字重单位：400px → 400
+     2. 图表 -30 后缀：补回 30% 透明度
+     3. 剔除废变量 --font-family-undefined: "String value"
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     00 基础色
+     ======================================================================== */
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  /* ========================================================================
+     01 灰度阶梯 · gray-1（最浅）→ gray-10（最深）
+     底层为 Arco Design gray 色板，未做海信定制。
+     文字层级见下方 text-color-*。
+     ======================================================================== */
+  --gray-gray-1: #f7f8fa;
+  --gray-gray-2: #f2f3f5;
+  --gray-gray-3: #e5e6eb;
+  --gray-gray-4: #c9cdd4;
+  --gray-gray-5: #a9aeb8;
+  --gray-gray-6: #86909c;
+  --gray-gray-7: #6b7785;
+  --gray-gray-8: #4e5969;
+  --gray-gray-9: #272e3b;
+  --gray-gray-10: #1d2129;
+
+  /* ========================================================================
+     02 品牌主色阶梯 · primary-1（最浅）→ primary-10（最深）
+     --primary-brand 指向 primary-6 = #00AAA6（海信青绿，品牌色本体）。
+
+     对比度实测（白底，WCAG 2.x）：
+       primary-6 #00AAA6  2.88:1  → 只做色块、面积填充；不能做文字，也不达标图标
+       primary-7 #009093  3.88:1  → 图标、边框、选中指示
+       primary-8 #00757B  5.48:1  → 链接文字、白字主按钮
+
+     即：需要「看得见」用 6，需要「读得出」用 8，中间态用 7。
+     ======================================================================== */
+  --primary-primary-1: #e8fffb;
+  --primary-primary-2: #adeee4;
+  --primary-primary-3: #79ddd1;
+  --primary-primary-4: #4accc1;
+  --primary-primary-5: #22bbb3;
+  --primary-primary-6: #00aaa6;
+  --primary-primary-7: #009093;
+  --primary-primary-8: #00757b;
+  --primary-primary-9: #005c64;
+  --primary-primary-10: #00444d;
+
+  /* 品牌语义别名 */
+  --primary-brand: var(--primary-primary-6); /* #00AAA6 主操作、重点状态、链接 */
+  --primary-brand-light: var(--higreen-higreen-brand-light); /* #F2FBFB 轻量强调背景 */
+
+  /* ========================================================================
+     03 描边 / 填充 / 文字
+     ======================================================================== */
+  --line-color-border-1: var(--gray-gray-2);
+  --line-color-border-2: var(--gray-gray-3);
+  --line-color-border-3: var(--gray-gray-4);
+  --line-color-border-4: var(--gray-gray-6);
+
+  --fill-color-fill-5: var(--gray-gray-8);
+  --fill-color-fill-4: var(--gray-gray-4);
+  --fill-color-fill-3: var(--gray-gray-3);
+  --fill-color-fill-2: var(--gray-gray-2);
+  --fill-color-fill-1: var(--gray-gray-1);
+  --fill-color-background-white: var(--color-white);
+  --fill-mask-color-bg: #1d2129;      /* 遮罩 / Tooltip 底 */
+  --fill-color-tooltip-bg: #1d2129;
+  --fill-menu-pg-bg-color: var(--gray-gray-2);
+
+  /* 文字四级 · 白底对比度实测 */
+  --text-color-text-1: var(--gray-gray-10); /* #1d2129  16.1:1  正文主色 */
+  --text-color-text-2: var(--gray-gray-8);  /* #4e5969   7.1:1  次要文字 */
+  --text-color-text-3: var(--gray-gray-6);  /* #86909c   3.24:1 仅 ≥18px 或辅助信息，不可做 14px 正文 */
+  --text-color-text-4: var(--gray-gray-4);  /* #c9cdd4   1.6:1  仅占位符、禁用态 */
+  --text-color-white: var(--color-white);
+
+  /* ========================================================================
+     04 语义状态色阶 · success / danger / warning / info
+     注意：本段是「界面状态」（成功、错误、警告、提示），
+           与下方 08「业务趋势语义」不是一回事，不可互换。
+     ======================================================================== */
+  --success-success-1: var(--green-green-1);
+  --success-success-2: var(--green-green-2);
+  --success-success-3: var(--green-green-3);
+  --success-success-4: var(--green-green-4);
+  --success-success-5: var(--green-green-5);
+  --success-success-6: var(--green-green-6);
+  --success-success-7: var(--green-green-7);
+  --success-success-8: var(--green-green-8);
+  --success-success-9: var(--green-green-9);
+  --success-success-10: var(--green-green-10);
+
+  --danger-danger-1: var(--red-red-1);
+  --danger-danger-2: var(--red-red-2);
+  --danger-danger-3: var(--red-red-3);
+  --danger-danger-4: var(--red-red-4);
+  --danger-danger-5: var(--red-red-5);
+  --danger-danger-6: var(--red-red-6);
+  --danger-danger-7: var(--red-red-7);
+  --danger-danger-8: var(--red-red-8);
+  --danger-danger-9: var(--red-red-9);
+  --danger-danger-10: var(--red-red-10);
+
+  --warning-warning-1: var(--orange-orange-1);
+  --warning-warning-2: var(--orange-orange-2);
+  --warning-warning-3: var(--orange-orange-3);
+  --warning-warning-4: var(--orange-orange-4);
+  --warning-warning-5: var(--orange-orange-5);
+  --warning-warning-6: var(--orange-orange-6);
+  --warning-warning-7: var(--orange-orange-7);
+  --warning-warning-8: var(--orange-orange-8);
+  --warning-warning-9: var(--orange-orange-9);
+  --warning-warning-10: var(--orange-orange-10);
+
+  --info-info-1: #e8f3ff;
+  --info-info-2: #bedaff;
+  --info-info-3: #94bfff;
+  --info-info-4: #6aa1ff;
+  --info-info-5: #4080ff;
+  --info-info-6: #165dff;
+  --info-info-7: #0e42d2;
+  --info-info-8: #072ca6;
+  --info-info-9: #031a79;
+  --info-info-10: #000d4d;
+
+  /* ========================================================================
+     05 扩展色阶（图表、标签、分类用）
+     每个色系 6 阶为基准色，1 最浅、10 最深。
+     ======================================================================== */
+  --cyan-cyan-1: #e8fffb;
+  --cyan-cyan-2: #b5f4ea;
+  --cyan-cyan-3: #86e8dd;
+  --cyan-cyan-4: #5edfd6;
+  --cyan-cyan-5: #33d1c9;
+  --cyan-cyan-6: #14c9c9;
+  --cyan-cyan-7: #0da5aa;
+  --cyan-cyan-8: #07828b;
+  --cyan-cyan-9: #03616c;
+  --cyan-cyan-10: #00424d;
+
+  --orangered-orangered-1: #fff3e8;
+  --orangered-orangered-2: #fdddc3;
+  --orangered-orangered-3: #fcc59f;
+  --orangered-orangered-4: #faac7b;
+  --orangered-orangered-5: #f99057;
+  --orangered-orangered-6: #f77234;
+  --orangered-orangered-7: #cc5120;
+  --orangered-orangered-8: #a23511;
+  --orangered-orangered-9: #771f06;
+  --orangered-orangered-10: #4d0e00;
+
+  --gold-gold-1: #fffce8;
+  --gold-gold-2: #fdf4bf;
+  --gold-gold-3: #fce996;
+  --gold-gold-4: #fadc6d;
+  --gold-gold-5: #f9cc45;
+  --gold-gold-6: #f7ba1e;
+  --gold-gold-7: #cc9213;
+  --gold-gold-8: #a26d0a;
+  --gold-gold-9: #774b04;
+  --gold-gold-10: #4d2d00;
+
+  --orange-orange-1: #fff7e8;
+  --orange-orange-2: #ffe4ba;
+  --orange-orange-3: #ffcf8b;
+  --orange-orange-4: #ffb65d;
+  --orange-orange-5: #ff9a2e;
+  --orange-orange-6: #ff7d00;
+  --orange-orange-7: #d25f00;
+  --orange-orange-8: #a64500;
+  --orange-orange-9: #792e00;
+  --orange-orange-10: #4d000a;
+
+  --purple-purple-1: #f5e8ff;
+  --purple-purple-2: #ddbef6;
+  --purple-purple-3: #c396ed;
+  --purple-purple-4: #a871e3;
+  --purple-purple-5: #8d4eda;
+  --purple-purple-6: #722ed1;
+  --purple-purple-7: #551db0;
+  --purple-purple-8: #3c108f;
+  --purple-purple-9: #27066e;
+  --purple-purple-10: #16004d;
+
+  --yellow-yellow-1: #feffe8;
+  --yellow-yellow-2: #fefebe;
+  --yellow-yellow-3: #fdfa94;
+  --yellow-yellow-4: #fcf26b;
+  --yellow-yellow-5: #fbe842;
+  --yellow-yellow-6: #fadc19;
+  --yellow-yellow-7: #cfaf0f;
+  --yellow-yellow-8: #a38408;
+  --yellow-yellow-9: #785d03;
+  --yellow-yellow-10: #4d3800;
+
+  --lime-lime-1: #fcffe8;
+  --lime-lime-2: #edf8bb;
+  --lime-lime-3: #dcf190;
+  --lime-lime-4: #c9e968;
+  --lime-lime-5: #b5e241;
+  --lime-lime-6: #9fdb1d;
+  --lime-lime-7: #7eb712;
+  --lime-lime-8: #5f940a;
+  --lime-lime-9: #437004;
+  --lime-lime-10: #2a4d00;
+
+  --red-red-1: #ffece8;
+  --red-red-2: #fdcdc5;
+  --red-red-3: #fbaca3;
+  --red-red-4: #f98981;
+  --red-red-5: #f76560;
+  --red-red-6: #f53f3f;
+  --red-red-7: #cb272d;
+  --red-red-8: #a1151e;
+  --red-red-9: #770813;
+  --red-red-10: #4d000a;
+
+  --pinkpurple-pinkpurple-1: #ffe8fb;
+  --pinkpurple-pinkpurple-2: #f7baef;
+  --pinkpurple-pinkpurple-3: #f08ee6;
+  --pinkpurple-pinkpurple-4: #e865df;
+  --pinkpurple-pinkpurple-5: #e13edb;
+  --pinkpurple-pinkpurple-6: #d91ad9;
+  --pinkpurple-pinkpurple-7: #b010b6;
+  --pinkpurple-pinkpurple-8: #8a0993;
+  --pinkpurple-pinkpurple-9: #650370;
+  --pinkpurple-pinkpurple-10: #42004d;
+
+  --bluepurple-bluepurple-1: #f2e8ff;
+  --bluepurple-bluepurple-2: #e0c9ff;
+  --bluepurple-bluepurple-3: #cbaaff;
+  --bluepurple-bluepurple-4: #b48cff;
+  --bluepurple-bluepurple-5: #9b6dff;
+  --bluepurple-bluepurple-6: #814eff;
+  --bluepurple-bluepurple-7: #5930d2;
+  --bluepurple-bluepurple-8: #3819a6;
+  --bluepurple-bluepurple-9: #1e0979;
+  --bluepurple-bluepurple-10: #0b004d;
+
+  --green-green-1: #e8ffea;
+  --green-green-2: #aff0b5;
+  --green-green-3: #7be188;
+  --green-green-4: #4cd263;
+  --green-green-5: #23c343;
+  --green-green-6: #00b42a;
+  --green-green-7: #009a29;
+  --green-green-8: #008026;
+  --green-green-9: #006622;
+  --green-green-10: #004d1c;
+
+  --magenta-magenta-1: #ffe8f1;
+  --magenta-magenta-2: #fdc2db;
+  --magenta-magenta-3: #fb9dc7;
+  --magenta-magenta-4: #f979b7;
+  --magenta-magenta-5: #f754a8;
+  --magenta-magenta-6: #f5319d;
+  --magenta-magenta-7: #cb1e83;
+  --magenta-magenta-8: #a11069;
+  --magenta-magenta-9: #77064f;
+  --magenta-magenta-10: #4d0034;
+}
+
+/* ==========================================================================
+   以下分组用 :root 继续声明，拆开仅为分段注释清晰。
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     06 海信品牌覆盖层 · higreen-*
+     表格头、页头、Tab 底、指标卡底等「海信绿调」专用面。
+     这一层不可用通用 gray 替代——它有明确的青绿倾向。
+     ======================================================================== */
+  --higreen-higreen-tab: #e5f6f6;           /* Tab 选中底色 */
+  --higreen-higreen-table: #e0f1f5;         /* 表头底色 */
+  --higreen-higreen-highlight: #a7e4e1;     /* 行高亮 */
+  --higreen-higreen-total: #f1f6f7;         /* 合计行 */
+  --higreen-higreen-area: #f3f8f8;          /* 分区底色 */
+  --higreen-higreen-brand-light: #f2fbfb;   /* 品牌浅色底 */
+  --higreen-bg-page-01: #e8f7fb;            /* 页面底色 · 主 */
+  --higreen-bg-page-02: #f6fcfe;            /* 页面底色 · 次 */
+  --higreen-higreen-pageheader-bg: #dcf3f4; /* 页头底色 */
+  --higreen-higreen-pageheader-bg2: #fafafa;
+
+  /* ========================================================================
+     07 组件用色
+     ======================================================================== */
+  --card-1: var(--color-white);
+  --card-2: #fbfbfb;
+  --indicatorcard-default: #f5f7fb;         /* 指标卡默认底 */
+  --indicatorcard-trend: var(--gray-gray-1);
+  --indicatorcard-trend-qbi: #f5f5f5;
+
+  --table-table-head: var(--higreen-higreen-table);
+  --table-table-border: var(--line-color-border-2);
+  --table-table-total: var(--higreen-higreen-total);
+  --table-table-highlight: var(--higreen-higreen-highlight);
+  --table-table-area: var(--higreen-higreen-area);
+
+  /* ========================================================================
+     08 业务趋势语义 · 「红好蓝差」
+     ------------------------------------------------------------------------
+     ★ 本业务采用红好蓝差：表现好 = 红，表现差 = 蓝。
+       这与通用设计惯例（跌标红、涨标绿）完全相反，必须按此执行。
+
+     ★ 危险红（--danger-danger-6 #f53f3f）表达风险/错误，
+       与「趋势表示表现好」不是同一语义。同为红色要靠文案和图标区分，
+       不能只靠颜色判断状态。
+
+     ★ --status-* 系列不能按字面理解：
+       --status-danger 指向 performwell（红），实际含义是「业绩上扬」。
+     ======================================================================== */
+  --semantic-semantic-performwell: #f53f3f; /* 表现好 · 红 */
+  --semantic-semantic-performbad: #3491fa;  /* 表现差 · 蓝 */
+
+  --businesssemantic-bs-target: #ff4f31;           /* 目标 */
+  --businesssemantic-bs-actual: var(--chart-chart-1); /* 实际 */
+  --businesssemantic-bs-sameperiod: #ff9a2e;       /* 同期 */
+  --businesssemantic-bs-yoy: #ecb500;              /* 同比 */
+  --businesssemantic-bs-mom: #f754a8;              /* 环比 */
+  --businesssemantic-bs-completionrate: #5082f9;   /* 完成率 */
+  --businesssemantic-bs-ytd: #31cee5;              /* 年初至今 */
+  --businesssemantic-bs-baseline: #a195ff;         /* 基准线 */
+
+  /* 状态色 · 复用了上面的语义色，取用时注意语义 */
+  --status-danger: var(--semantic-semantic-performwell);
+  --status-warning: var(--chart-chart-8);
+  --status-attention: var(--chart-chart-7);
+  --status-info: var(--semantic-semantic-performbad);
+  --status-success: var(--chart-chart-1);
+
+  /* ========================================================================
+     09 图表主色 · chart-1 → chart-12
+     图例必须按 1—12 顺序取色，不跳跃选色；业务固定语义优先于无含义序列分配。
+     -30 后缀为 30% 不透明度版本（下方第 3 处修正：原导出丢失了 alpha）。
+     ======================================================================== */
+  --chart-chart-1: #00bbb3;
+  --chart-chart-2: #5b8ff9;
+  --chart-chart-3: #31cee5;
+  --chart-chart-4: #a87be7;
+  --chart-chart-5: #597ec3;
+  --chart-chart-6: #59c286;
+  --chart-chart-7: #ffc124;
+  --chart-chart-8: #ff8000;
+  --chart-chart-9: #ff5555;
+  --chart-chart-10: #a9e400;
+  --chart-chart-11: #009396;
+  --chart-chart-12: #00c3ff;
+
+  /* 30% 不透明度版本（修正：原导出的值与不带后缀的完全相同，alpha 被抹平） */
+  --chart-chart-1-30: #00bbb34d;
+  --chart-chart-2-30: #5b8ff94d;
+  --chart-chart-3-30: #31cee54d;
+  --chart-chart-4-30: #a87be74d;
+  --chart-chart-5-30: #597ec34d;
+  --chart-chart-6-30: #59c2864d;
+  --chart-chart-7-30: #ffc1244d;
+  --chart-chart-8-30: #ff80004d;
+  --chart-chart-9-30: #ff55554d;
+  --chart-chart-10-30: #a9e4004d;
+  --chart-chart-11-30: #0093964d;
+  --chart-chart-12-30: #00c3ff4d;
+
+  /* 坐标轴与网格 */
+  --chart-axis: var(--gray-gray-4);
+  --chart-grid: var(--gray-gray-3);
+
+  /* ========================================================================
+     10 AI 辅助分析背景渐变
+     已有 Paint Style 资产，不可重新生成替代色。
+     ======================================================================== */
+  --gradient-ai-analysis: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(222, 254, 255, 0.5) 41%,
+    rgba(233, 231, 255, 0.5) 69%,
+    rgba(201, 203, 255, 0.5) 100%
+  );
+}
+
+/* ==========================================================================
+   11 字体
+   --------------------------------------------------------------------------
+   中文：PingFang SC（Regular 400 / Semibold 600 / Bold 700），字距 0
+   数字：D-DIN-PRO SemiBold 600，字距 0，样式名「数值/No-Bold」
+   局部：LingYangSans（仅局部资产，非全局字体）
+   Noto Sans SC / Inter 只用于 Figma 规范文档自身排版，不是产品字体。
+
+   最小字号：桌面端 12px，移动端 10px。
+   行高以「实际 Text Styles」为准，下方 02/C 差异表中「建议值」未应用，不采用。
+   ========================================================================== */
+:root {
+  --font-family-pingfang-sc: "PingFang SC";
+  --font-family-d-din-pro: "D-DIN-PRO";
+  --font-family-lingyangsans: "LingYangSans";
+  --font-family-nunito-sans: "Nunito Sans";
+
+  /* ------------------------------------------------------------------
+     可用字体栈（实施用这组，不要直接写 --font-family-pingfang-sc）
+     PingFang SC 只在 macOS / iOS 存在，本平台是 PC 后台、用户以 Windows 为主，
+     直接写单个字族会静默 fallback 到系统默认字体，规范等于没生效。
+     D-DIN-PRO 不是系统字体，必须自托管 woff2，否则数字照样 fallback。
+     LingYangSans 仅局部资产，不进全局字体栈。
+     ------------------------------------------------------------------ */
+  --font-family-cn-stack: "PingFang SC", "Microsoft YaHei", "Source Han Sans SC",
+    "Noto Sans SC", sans-serif;
+  --font-family-num-stack: "D-DIN-PRO", "Barlow Semi Condensed", ui-monospace, monospace;
+
+  --font-size-10: 10px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-36: 36px;
+
+  /* 修正 1：原导出为 400px / 600px / 700px，带 px 是非法 CSS，去掉单位 */
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --letter-spacing-0: 0px;
+  --paragraph-spacing-0: 0px;
+  --paragraph-indent-0: 0px;
+  --list-spacing-0: 0px;
+
+  --line-height-14: 14px;
+  --line-height-18: 18px;
+  --line-height-20: 20px;
+  --line-height-22: 22px;
+  --line-height-24: 24px;
+  --line-height-28: 28px;
+  --line-height-32: 32px;
+  --line-height-36: 36px;
+  --line-height-44: 44px;
+
+  /* ------------------------------------------------------------------
+     中文文字层级（实际 Text Styles，PingFang SC，字距 0）
+     一级层级靠「字号 + 字重 + 文字色」三者共同表达，不只靠加粗。
+     ------------------------------------------------------------------ */
+  /* 12/16 400 · 辅助 / 桌面最小 */
+  /* 12/16 600 · 辅助强调 / 表头 */
+  /* 14/22 400 · 正文基准 */
+  /* 14/22 600 · 模块标题 / TAB */
+  /* 16/24 600 · 页面标题 */
+  /* 18/28 400 · 扩展常规 */
+  /* 18/28 600 · 扩展强调 */
+
+  /* ------------------------------------------------------------------
+     数字文字层级（D-DIN-PRO SemiBold 600，字距 0）
+     重要数字用 24 / 36 层级；单位与辅助信息退后，不要整体加粗。
+     ------------------------------------------------------------------ */
+  /* 14/18 600 · 辅助数值 */
+  /* 24/28 600 · 小指标 / 主数据 */
+  /* 36/36 600 · 大指标 / 强调数据 */
+}
+
+/* ==========================================================================
+   12 间距与栅格
+   --------------------------------------------------------------------------
+   ★ 场景判定（用户 2026-11-06 确认）
+     服务指南针与数字化门店共用同一套组件库，只有边距与栅格槽不同：
+
+       需求关键词含「数字化门店」   → 边距 8px、栅格槽 8px   （第一组 --grid-*）
+       需求关键词含「服务指南针」   → 边距 12px、栅格槽 12px （第二组 --grid-*-report）
+       两个关键词都没有           → 12px
+
+     8px 是例外，12px 是默认。拿不准时用 12px，不要默认套 8px。
+
+   桌面 24 列 Stretch 栅格：
+     主工作区左右 Margin 8px / Gutter 8px / 行间距 8px
+     主工作区不含 178px 侧栏；列宽随可用宽度伸缩，小数不逐列取整。
+
+   1440 宽页面推算：
+     主工作区 W = 1440 − 178 = 1262px
+     全宽内容 = 1262 − 8 × 2 = 1246px
+     跨列模块间保持 8px 净距，按实际 W 计算。
+     旧样板 1254px 是观察到的容器值，不与新计算混用。
+
+   8px 是页面主规则，16px 是已知的组件内部用法；
+   4 / 24 / 32 属扩展刻度建议，需结合组件语义确认，不是已有变量。
+   ========================================================================== */
+:root {
+  /* --- 数字化门店（关键词命中「数字化门店」）：8px 节奏 --- */
+  --grid-margin: 8px;
+  --grid-gutter: 8px;
+  --grid-row-gap: 8px;
+  --grid-columns: 24;
+  --space-card-padding: 8px;   /* 卡片四侧 Padding */
+  --space-card-gap: 8px;       /* 卡间 / 行间净距 */
+  --space-component: 16px;     /* 组件内部已知用法（如筛选器左右 16px 例外） */
+
+  /* --- 服务指南针 / 未命中关键词：12px 节奏（默认）--- */
+  --grid-margin-report: 12px;
+  --grid-gutter-report: 12px;
+
+  /* --- 页面骨架实测值 --- */
+  --layout-sidebar-width: 178px;
+  --layout-topbar-height: 42px;   /* 顶区 */
+  --layout-filter-height: 48px;   /* 筛选行 */
+  --layout-title-height: 48px;    /* 标题区 */
+
+  /* --- 扩展刻度建议（未确认，勿当既定规范使用） --- */
+  --space-4-suggested: 4px;
+  --space-24-suggested: 24px;
+  --space-32-suggested: 32px;
+}
+
+/* ==========================================================================
+   13 圆角
+   --------------------------------------------------------------------------
+   桌面一级模块 8px；二级模块、按钮与标签 4px；移动端 4px。
+   页面中可观察到 0 / 2 / 4 / 6 / 8 / 20，除已明确的 4 / 8 外，
+   其余只描述现有实例，不新增 12 / 16 / 24 圆角体系。
+   组件内部按各自层级取值，不把所有嵌套层压成同一个值。
+   ========================================================================== */
+:root {
+  --radius-lg: 8px;   /* 桌面一级模块、页面容器 */
+  --radius-sm: 4px;   /* 二级模块、按钮、标签 */
+  --radius-mobile: 4px;
+  --radius-none: 0;
+}
+
+/* ==========================================================================
+   14 阴影
+   --------------------------------------------------------------------------
+   常规白卡优先依靠「背景 + 边线」区分，而不是加阴影。
+   阴影表达表面深度，不代表 CSS 层级；无阴影不等于无边界。
+   阴影与 Z-index 分别管理，不堆叠重复阴影，注意父容器裁切。
+   ========================================================================== */
+:root {
+  /* 已观察到的两个真实容器阴影 */
+  --shadow-container: 1px 1px 8px 0 rgba(0, 0, 0, 0.08); /* 页面容器 · 观察 12 处 */
+  --shadow-ai-container: 0px 2px 6px 0 rgba(139, 144, 162, 0.1); /* AI 页面容器 · 观察 4 处 */
+
+  /* 特殊场景：品牌绿阴影仅用于已观察的品牌装饰；移动 Tabbar 用横向偏移，
+     方向与透明度按原实例保留，不统一为通用悬浮层。 */
+
+  /* Elevation 阶梯（仅 elevation-1 有实例依据，2/3 为待确认建议） */
+  --elevation-0: none;                                    /* 建议 · 常规白卡 */
+  --elevation-1: 1px 1px 8px 0 rgba(0, 0, 0, 0.08);       /* 有实例依据 */
+  --elevation-2: 0 4px 16px 0 rgba(0, 0, 0, 0.12);        /* 待确认 */
+  --elevation-3: 0 8px 24px 0 rgba(0, 0, 0, 0.16);        /* 待确认 */
+}
+
+/* ==========================================================================
+   15 层级 Z-index
+   --------------------------------------------------------------------------
+   本次建议的规则，尚待研发确认；不是从原组件里提取的数值。
+   数值只在可比较的 Stacking Context 内有效：子元素 z-index 再大，
+   也不能跨越父级上下文顺序——先定父级，再比内部子层。
+
+   重叠可见性：页面普通态可同时出现吸顶、页面下拉与悬浮助手；
+   进入模态后关闭背景浮层，只保留当前弹窗内部的下拉与提示；
+   全局轻提示位于模态之上。
+   ========================================================================== */
+:root {
+  --z-base: 0;              /* 常规内容：页面、图表、表格 */
+  --z-sticky: 100;          /* 吸顶区域：顶栏 / 固定表头 */
+  --z-dropdown: 200;        /* 页面下拉：筛选下拉 */
+  --z-floating: 300;        /* 悬浮操作：助手 / 浮动操作 */
+  --z-backdrop: 1000;       /* 模态遮罩：阻断背景交互 */
+  --z-modal: 1010;          /* 弹窗 / 抽屉：模态内容容器 */
+  --z-modal-popover: 1020;  /* 弹窗内下拉：属于当前弹窗上下文 */
+  --z-toast: 1100;          /* 全局轻提示：短时操作结果反馈 */
+  --z-tooltip: 1200;        /* 当前上下文提示 */
+}
+
+/* ==========================================================================
+   16 组件实测规格
+   --------------------------------------------------------------------------
+   来源节点：
+     指标卡 · 自开发  721:26268     指标卡 · QBI     1997:5040
+     按钮 · 自开发    688:31394     按钮 · QBI       3567:17805
+     按钮 · 通用      5351:2403
+     一级tab          688:31552     二级tab          688:33863
+     三级tab          688:33948     切换tab          4620:1879
+     页签（页头内）   5315:16664
+
+   ★ 开发模式是独立于「场景」的第二根轴：
+       自开发  → 指标卡 232 / 237 宽，按钮为描边款
+       QBI     → 指标卡统一 252 宽，按钮为品牌实心款
+     两根轴正交，场景只决定栅格节奏，开发模式只决定组件形态。
+
+   以下数值均为 Figma 组件实测，Figma 未建变量的部分按 --组件名-属性 派生命名。
+   ========================================================================== */
+:root {
+  /* ---------------- 16.1 指标卡 IndicatorCard ---------------- */
+  /* 共同内层结构：内层 card 圆角 6px（历史实例，不在 4/8 两档之内，不要扩散） */
+  --indicatorcard-radius: 6px;
+  --indicatorcard-wrap-radius: 8px;   /* 外层包装按一级模块 8px */
+  --indicatorcard-padding: 12px;
+  --indicatorcard-gap: 8px;
+  --indicatorcard-content-gap: 4px;   /* 标题 / 数值 / 辅指标 三行间距 */
+
+  /* 自开发：左右布局 232×108，上下布局 237×108 */
+  --indicatorcard-w-self-horizontal: 232px;
+  --indicatorcard-w-self-vertical: 237px;
+  --indicatorcard-h-self: 108px;
+
+  /* QBI：两种布局统一 252 宽，左右 102 高 / 上下 114 高 */
+  --indicatorcard-w-qbi: 252px;
+  --indicatorcard-h-qbi-horizontal: 102px;
+  --indicatorcard-h-qbi-vertical: 114px;
+  --indicatorcard-padding-qbi-horizontal: 24px 12px; /* QBI 左右布局内距不对称 */
+
+  /* 状态底色 */
+  --indicatorcard-bg: var(--indicatorcard-default);       /* #f5f7fb */
+  --indicatorcard-bg-trend: var(--indicatorcard-trend);   /* #f7f8fa 自开发趋势默认 */
+  --indicatorcard-bg-trend-qbi: var(--indicatorcard-trend-qbi); /* #f5f5f5 QBI 趋势默认 */
+  --indicatorcard-opacity-linked-off: 0.5; /* QBI 联动未选中 */
+
+  /* ---------------- 16.2 按钮 Button ---------------- */
+  --button-height: 32px;
+  --button-radius: 4px;
+  --button-padding-y: 5px;
+  --button-padding-x: 8px;
+  --button-gap: 8px;              /* 文字与图标间距 */
+  --button-icon-size: 14px;
+  --button-padding-icon-only: 9px; /* 纯图标按钮 */
+  --button-gap-icon-only: 10px;
+  --button-border-width: 1px;
+
+  /* 主要（通用按钮与 QBI 按钮同款实心品牌色） */
+  --button-primary-bg: #00aaa6;
+  --button-primary-bg-hover: #22bbb3;
+  --button-primary-bg-active: #009093;
+  --button-primary-bg-disabled: #79ddd1;
+  --button-primary-text: var(--color-white);
+
+  /* 次要（自开发按钮默认款也是这一款描边） */
+  --button-secondary-bg: #f7f8fa;
+  --button-secondary-bg-hover: #ffffff;
+  --button-secondary-bg-active: #f2f3f5;
+  --button-secondary-border: #c9cdd4;
+  --button-secondary-border-hover: #86909c;
+  --button-secondary-text: #4e5969;
+  --button-secondary-text-hover: #1d2129;
+  --button-secondary-text-disabled: #c9cdd4;
+
+  /* 虚框：配色同次要，仅描边改虚线 */
+  --button-dashed-border-style: dashed;
+  --button-dashed-stroke-dash: 4 4;
+
+  /* 线框 */
+  --button-outline-text: #00aaa6;
+  --button-outline-text-hover: #22bbb3;
+  --button-outline-text-active: #009093;
+  --button-outline-text-disabled: #79ddd1;
+
+  /* 文本 */
+  --button-text-bg-hover: #f2f3f5;
+  --button-text-bg-active: #e5e6eb;
+
+  /* ---------------- 16.3 Tabs · 三级层级 ---------------- */
+  /* L1 一级 tab：线条型（下划线指示）—— 顶层，用于页面级口径切换 */
+  --tab-l1-container-padding-x: 16px;
+  --tab-l1-item-gap: 32px;          /* 相邻一级 tab 的水平间距 */
+  --tab-l1-item-padding-y: 9px;     /* 尺寸=中；小 7px / 大 11px / 迷你 6px */
+  --tab-l1-item-padding-y-sm: 7px;
+  --tab-l1-item-padding-y-lg: 11px;
+  --tab-l1-item-padding-y-mini: 6px;
+  --tab-l1-indicator-height: 2px;
+  --tab-l1-indicator-color: var(--primary-primary-6);
+  --tab-l1-text-active: var(--primary-primary-6);
+  --tab-l1-text: var(--text-color-text-2);
+
+  /* L2 二级 tab：胶囊型（选中填底色）—— 指标/图表的分组切换 */
+  --tab-l2-gap: 8px;
+  --tab-l2-item-padding: 4px 8px;
+  --tab-l2-item-gap: 4px;
+  --tab-l2-radius: 4px;
+  --tab-l2-bg-active: var(--gray-gray-2);          /* #f2f3f5 */
+  --tab-l2-bg: transparent;
+  --tab-l2-text-active: var(--text-color-text-1);
+  --tab-l2-text: var(--text-color-text-2);
+
+  /* L3 三级 tab：纯文本 + 竖线分隔 —— 最末级，同一图表内的维度切换 */
+  --tab-l3-gap: 8px;
+  --tab-l3-item-padding: 0 8px;
+  --tab-l3-item-gap: 4px;
+  --tab-l3-item-height: 22px;
+  --tab-l3-divider-color: var(--line-color-border-2); /* #e5e6eb */
+  --tab-l3-divider-height: 12px;
+  --tab-l3-text-active: var(--primary-primary-6);
+  --tab-l3-text: var(--text-color-text-2);
+  --tab-l3-text-disabled: var(--text-color-text-4);
+  --tab-l3-bg-hover: var(--gray-gray-2);
+
+  /* 切换 tab：与二级同为胶囊型但用绿底选中，用于并列口径互斥切换 */
+  --tab-switch-gap: 8px;
+  --tab-switch-item-padding: 4px 8px;
+  --tab-switch-radius: 4px;
+  --tab-switch-bg-active: var(--higreen-higreen-tab); /* #e5f6f6 */
+  --tab-switch-bg: var(--gray-gray-1);                /* #f7f8fa */
+  --tab-switch-text-active: var(--primary-primary-6);
+  --tab-switch-text: var(--text-color-text-2);
+
+  /* ---------------- 16.4 页签（页头内的 tab） ---------------- */
+  --pageheader-tab-height: 32px;
+  --pageheader-tab-padding-x: 20px;
+  --pageheader-tab-gap: 10px;        /* 首页类型：无图标 */
+  --pageheader-tab-gap-with-icon: 2px; /* 其他类型：带 14×14 星标 */
+  --pageheader-tab-icon-size: 14px;
+  --pageheader-tab-radius: 4px 4px 0 0;
+  --pageheader-tab-border: 1px 1px 0 var(--line-color-border-2);
+  --pageheader-tab-bg: #fafafa;
+  --pageheader-tab-text: var(--text-color-text-2);
+  --pageheader-tab-bg-active: var(--higreen-higreen-pageheader-bg); /* #dcf3f4 */
+  --pageheader-tab-border-active: var(--primary-primary-6);
+  --pageheader-tab-text-active: var(--primary-primary-6);
+}
+
+/* ==========================================================================
+   17 筛选器与控件
+   --------------------------------------------------------------------------
+   来源节点：
+     筛选器 · 自开发   4072:11058（组件集「筛选器」12 个变体）
+     筛选器 · QBI      3567:17929
+     tabs-capsule      688:34823（自开发）/ 3562:10477（QBI）
+     select            1594:29003
+     datepicker        1608:25964
+     dropdown-menu     1609:32017 / menu-item 1609:32511
+
+   筛选器栏由 tabs-capsule + select + datepicker 按业务组合而成，
+   不是固定组件；下面给的是「容器规则 + 零件规格」。
+   ========================================================================== */
+:root {
+  /* ---------------- 17.1 筛选器容器 ---------------- */
+  /* 自开发：只右上角 8px，贴内容区左上角 */
+  --filterbar-height: 48px;
+  --filterbar-height-2row: 88px;      /* 两行：8 + 32 + 8 + 32 + 8 */
+  --filterbar-padding: 8px 16px;
+  --filterbar-gap: 8px;
+  --filterbar-radius: 0 8px 0 0;
+  --filterbar-bg: var(--color-white);
+  --filterbar-divider: 1px solid var(--line-color-border-2); /* #e5e6eb，仅部分变体有 */
+
+  /* QBI：整块圆角 8px，左右内距 12，控件间距 12 */
+  --filterbar-padding-qbi: 8px 12px;
+  --filterbar-gap-qbi: 12px;
+  --filterbar-radius-qbi: 8px;
+
+  /* 筛选字段的标签（QBI 用，自开发不带标签） */
+  --formlabel-gap: 8px;
+  --formlabel-color: var(--text-color-text-2);
+  --formlabel-size: 14px;
+
+  /* ---------------- 17.2 tabs-capsule（分段控件） ---------------- */
+  /* 自开发：灰底滑块，选中项浮出白卡 */
+  --capsule-padding: 3px;
+  --capsule-bg: var(--gray-gray-2);          /* #f2f3f5 */
+  --capsule-radius: 4px;
+  --capsule-item-padding: 2px 12px;          /* 尺寸中，高度算下来 32 */
+  --capsule-item-padding-lg: 4px 12px;       /* 大：36 */
+  --capsule-item-padding-sm: 0 12px;         /* 小：28 */
+  --capsule-item-padding-mini: 0 12px;       /* 迷你：24，文字转 12px */
+  --capsule-item-gap: 8px;
+  --capsule-item-radius: 4px;
+  --capsule-item-bg-active: var(--color-white);
+  --capsule-item-bg: var(--gray-gray-2);
+  --capsule-text-active: var(--primary-primary-6);
+  --capsule-text: var(--text-color-text-2);
+  --capsule-divider-height: 14px;
+  --capsule-divider-color: var(--line-color-border-2);
+
+  /* QBI：描边胶囊按钮组，无容器底色，选中改描边色（高 34） */
+  --capsule-qbi-gap: 4px;
+  --capsule-qbi-item-padding: 5px 12px;
+  --capsule-qbi-border-active: var(--primary-primary-6);
+  --capsule-qbi-border: var(--line-color-border-3);
+
+  /* ---------------- 17.3 select 选择器 ---------------- */
+  --select-padding-lg: 6px 12px;      /* 大 */
+  --select-padding: 4px 12px;         /* 中（默认）→ 高 32 */
+  --select-padding-sm: 2px 12px;      /* 小 */
+  --select-padding-mini: 1px 12px;    /* 迷你，文字转 12px */
+  --select-radius: 4px;
+  --select-radius-borderless: 2px;    /* 无边框模式 */
+  --select-bg: var(--color-white);
+  --select-border: var(--line-color-border-3);        /* #c9cdd4 */
+  --select-border-active: var(--primary-primary-6);   /* 悬停 / 聚焦 */
+  --select-bg-disabled: var(--gray-gray-2);
+  --select-text: var(--text-color-text-1);            /* 有值 #1d2129 */
+  --select-placeholder: var(--gray-gray-6);           /* #86909c */
+  --select-arrow-size: 12px;
+  --select-gap: 4px;
+
+  /* ---------------- 17.4 datepicker 日期选择器 ---------------- */
+  --datepicker-padding-lg: 7px 12px;
+  --datepicker-padding: 5px 12px;     /* 中 —— 注意：比 select 高 2px */
+  --datepicker-padding-sm: 3px 12px;
+  --datepicker-padding-mini: 2px 12px;
+  --datepicker-radius: 4px;
+  --datepicker-bg: var(--color-white);
+  --datepicker-border: var(--line-color-border-3);
+  --datepicker-border-active: var(--primary-primary-6);
+  --datepicker-bg-disabled: var(--gray-gray-2);
+  --datepicker-separator-width: 28px;
+  --datepicker-separator-padding: 0 8px;
+  --datepicker-input-gap: 8px;        /* 第二个输入区左内距 */
+  --datepicker-suffix-gap: 10px;
+
+  /* ---------------- 17.5 dropdown-menu 下拉菜单 ---------------- */
+  --dropdown-radius: 4px;
+  --dropdown-bg: var(--color-white);
+  --dropdown-border: var(--gray-gray-2);              /* #f2f3f5，比常规边框更淡 */
+  --dropdown-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1); /* shadow-2 */
+  --dropdown-padding: 4px 0;
+  --dropdown-arrow-space: 8px;        /* 容器顶部给箭头留的位置 */
+  --dropdown-item-padding: 7px 12px;  /* 高 36 */
+  --dropdown-item-bg: var(--color-white);
+  --dropdown-item-bg-hover: var(--gray-gray-2);
+  --dropdown-item-text: var(--text-color-text-2);
+  --dropdown-item-text-active: var(--primary-primary-6);
+  --dropdown-item-text-disabled: var(--text-color-text-4);
+  --dropdown-item-text-disabled-active: var(--primary-primary-3); /* #79ddd1 */
+  --dropdown-check-size: 12px;
+  --dropdown-check-right: 8px;
+  --dropdown-max-height: 260px;       /* 约 7 项，超过出滚动条 */
+  --dropdown-scrollbar-width: 8px;
+}
+
+/* ==========================================================================
+   18 图标
+   --------------------------------------------------------------------------
+   来源节点：
+     icon-wrapper     686:28315（10 尺寸 × 2 颜色模式 = 20 变体）
+     图标库 canvas    685:16918（9 分类；本地 references/icons 492 枚 SVG）
+     小标题图标       2403:4458（10 个业务口径变体）
+
+   ★ 图标是「填充式路径」（fill-rule: evenodd），不是 stroke。
+     视觉线宽烘入几何里，随尺寸等比缩放：24 grid 下约 2px，
+     10px 尺寸下最细处约 1.2px，已经发虚——10 / 12 两档慎用。
+   ★ 默认填色 #4E5969（= --text-color-text-2），不是品牌绿。
+   ★ 「脱离颜色样式」是颜色绑定开关，不是尺寸维度：
+       false → 跟随颜色样式，代码里就是 currentColor
+       true  → 颜色被写死，仅一次性覆盖用，不要扩散
+   ========================================================================== */
+:root {
+  /* ---------------- 18.1 尺寸阶梯（实测，均 1:1） ---------------- */
+  --icon-size-10: 10px;
+  --icon-size-12: 12px;
+  --icon-size-14: 14px;
+  --icon-size-16: 16px;
+  --icon-size-18: 18px;
+  --icon-size-20: 20px;
+  --icon-size-22: 22px;
+  --icon-size-24: 24px;
+  --icon-size-32: 32px;
+  --icon-size-48: 48px;
+
+  /* 组件里的已实测档位 */
+  --icon-size-in-button: 14px;      /* 按钮图标 14×14 */
+  --icon-size-in-control: 12px;     /* select 箭头 / datepicker 减号 / 下拉对勾 */
+  --icon-size-in-pageheader: 14px;  /* 页签星标 */
+
+  /* ---------------- 18.2 颜色 ---------------- */
+  --icon-color: var(--text-color-text-2);        /* #4e5969 默认 */
+  --icon-color-weak: var(--text-color-text-3);   /* 仅辅助图标，不能做功能图标 */
+  --icon-color-active: var(--primary-primary-7); /* 需要品牌绿时用 7，不用 6（2.88:1 不达图标 3:1） */
+  --icon-color-inverse: var(--color-white);      /* 渐变底 / 深色底上的图标 */
+  --icon-color-disabled: var(--text-color-text-4);
+
+  /* ---------------- 18.3 小标题图标（渐变徽标） ---------------- */
+  --icon-badge-size: 24px;
+  --icon-badge-glyph: 20px;         /* 内嵌图标，四边各 2px */
+  --icon-badge-radius: 6px;         /* 历史实例，与指标卡内层同值 */
+  --icon-badge-gradient: linear-gradient(143deg, #22bbb3 14%, #00aaa6 94%);
+  --icon-badge-blur: 10px;
+}
