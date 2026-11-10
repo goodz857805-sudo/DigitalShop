@@ -46,6 +46,8 @@ DigitalShop/
     ├── text-style-variables-mode-1.css   # Figma 文字样式导出
     ├── pt-container-head-default.svg     # AI 辅助分析头部底色
     ├── pt-container-title.svg            # AI 辅助分析渐变标题
+    ├── logo/
+    │   └── hisense.svg                   # 海信 Logo 母版：144 × 23、单色 #00AAA6（8 条填充路径，无描边/渐变）
     └── icons/                            # 图标库：9 分类 492 枚 SVG（≈0.5 MB）
         ├── arrow/        36
         ├── cover/        27
@@ -60,6 +62,8 @@ DigitalShop/
 
 图标命名规则：`references/icons/<分类>/<名称>.svg`，小写 kebab-case，如 `references/icons/cover/star-fill.svg`。
 默认填充 `#4E5969`（= `--text-color-text-2`），用时统一改成 `fill: currentColor` 跟随文字色。
+
+Logo 取件：`references/logo/hisense.svg`（母版 144 × 23、单色 `#00AAA6`、8 条填充路径）。反白与灰阶**不另存文件**，改 `fill` 即可；比例不得拉出 `144:23` 以外。
 
 ---
 
