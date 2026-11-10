@@ -791,9 +791,11 @@ SVG 实体就在 skill 内：`references/icons/<分类>/<名称>.svg`（9 个分
 2. **缩略图必须是同一份页面 DOM 的等比缩放，不是手绘骨架。** 缩略图容器 `.tpl-thumb-win` 内放一个 1440×900 的 `.tpl-thumb-doc`，内容由**与预览页完全相同的拼装函数**生成，`transform: scale(容器宽/1440)` + `transform-origin:0 0` 等比缩放；缩略图内 `pointer-events:none`，hover 才出深色遮罩与「› 预览」。不允许用色块拼一张近似图——要求「缩略图与页面实际一致」时，唯一可交付的做法就是同一份 DOM。
 3. **交互：点缩略图 → 目录被整页替换**，页面全宽挂载在同一节内（不是弹窗、不是 iframe、不是缩放画布），左下角悬浮「返回」按钮回目录，`Esc` 也可返回。预览页里图表用 ECharts 真渲染，缩略图内换 SVG 折线/柱形，避免 canvas 缩小后发虚。**图表容器的 `id` 只在预览页输出**（`forThumb` 为 true 时不写 id），因此缩略图与预览页同时存在于 DOM 时不会产生重复 id；ECharts 初始化一律 `pageEl.querySelector('#'+id)` 定位，不用 `document.getElementById`，否则会命中隐藏缩略图里的同名节点。
 
-落地检查：预览页与缩略图共用同一个 `pageHtml(def, id, forThumb)`，`forThumb` 只切换图表实现（ECharts ↔ SVG），其余 DOM、类名、层级逐字相同；页面框架只保留布局类（`.tpl-page` / `.tpl-main` / `.tpl-title` / `.tpl-body` / `.tpl-row` / `.tpl-block`），不自造任何内容组件。新增页面时只允许用**布局位**摆位：`.tpl-panel`（白卡内距 8）、`.tpl-subpanel`（#FBFBFB 二级块）、`.tpl-grid-3`（三列 gap 10）、`.tpl-cards-3` / `.tpl-cards-4`（197 卡栅格）、`.tpl-figure*`（份额右侧图表面板）、`.tpl-col-strip`（列即字段的卡列表）、`.tpl-scroll-x` + `.data-table.is-frozen`（长表首列冻结）、`.tpl-ai-ball`（右下 AI 悬浮球）。筛选器三型：自开发 48 高（`.filterbar`）/ 份额页胶囊 + 展开·重置·奥维行业概览 / QBI 50 高（`.filterbar-qbi`，字段 > 4 自动两行 88 高，`.is-wrap`）。
+落地检查：预览页与缩略图共用同一个 `pageHtml(def, id, forThumb)`，`forThumb` 只切换图表实现（ECharts ↔ SVG），其余 DOM、类名、层级逐字相同；页面框架只保留布局类（`.tpl-page` / `.tpl-main` / `.tpl-report` / `.tpl-title` / `.tpl-body` / `.tpl-row` / `.tpl-block`），不自造任何内容组件。
 
-**页面底色**：整页（1440 × 900 铺满，不只是容器内）为 `background: linear-gradient(289deg, #E8F7FB 20.14%, #F6FCFE 98.51%)`，容器 `#F2F3F5`，区块净距 8。色标是 **20.14% / 98.51%**，不是 0% / 100%；角度是 **289deg**，不写 `-82deg` 或 278deg 等等价写法。缩略图容器与预览页必须用同一个值。
+**框架层与报表区必须分开（两层结构）**：侧导航 + 顶部页签是「信数框架」，容器 `.tpl-main` 只负责布局，**`background:none; box-shadow:none`**，页签直接压在画布渐变上；筛选器 + 大标题 + 内容区包进 `.tpl-report`，**整体一个 box**（报表加载区域），`background:#F2F3F5`、圆角 `0 8px 8px 0`、`box-shadow:1px 1px 8px 0 rgba(0,0,0,.08)`，顶 1px 渐变描边用 `.tpl-report::before`。**不要把投影或 #F2F3F5 写在 `.tpl-main` 上**，否则页签会被一起包进 box；筛选器/标题/内容区的直接子选择器写成 `.tpl-report > .filterbar` / `.tpl-report > .tabs-l1`。新增页面时只允许用**布局位**摆位：`.tpl-panel`（白卡内距 8）、`.tpl-subpanel`（#FBFBFB 二级块）、`.tpl-grid-3`（三列 gap 10）、`.tpl-cards-3` / `.tpl-cards-4`（197 卡栅格）、`.tpl-figure*`（份额右侧图表面板）、`.tpl-col-strip`（列即字段的卡列表）、`.tpl-scroll-x` + `.data-table.is-frozen`（长表首列冻结）、`.tpl-ai-ball`（右下 AI 悬浮球）。筛选器三型：自开发 48 高（`.filterbar`）/ 份额页胶囊 + 展开·重置·奥维行业概览 / QBI 50 高（`.filterbar-qbi`，字段 > 4 自动两行 88 高，`.is-wrap`）。
+
+**页面底色**：整页（1440 × 900 铺满，不只是报表区内）为 `background: linear-gradient(289deg, #E8F7FB 20.14%, #F6FCFE 98.51%)`，报表区 `.tpl-report` 为 `#F2F3F5`，区块净距 8。色标是 **20.14% / 98.51%**，不是 0% / 100%；角度是 **289deg**，不写 `-82deg` 或 278deg 等等价写法。缩略图容器与预览页必须用同一个值。
 
 ---
 
