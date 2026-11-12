@@ -1,8 +1,8 @@
 ---
-name: ued-master
-description: 数字化门店 / 服务指南针的 BI 后台页面生成与视觉优化（UEDMaster）。命中「数字化门店」「服务指南针」，或需求属于 BI 后台、报表、看板、指标卡、数据可视化时，以 references/digital-store-spec.md 为执行依据，取值来自 digital-store-tokens.css，技术栈为 Arco 组件 + 覆盖 token。同时保留通用能力：对没有专门设计系统的产品直接生成可交互 demo 原型，或对已有 demo（HTML / 前端页面）做排版、留白、层级、色彩、动效、微交互和响应式的升级，并截图自检、持续迭代。当用户要「做个 demo / 原型 / 高保真页面」「把这个原型优化得更好看 / 更专业」「UI 效果差，帮我改」时使用。
+name: digital-store
+description: 数字化门店 / 服务指南针的 BI 后台页面生成与视觉优化（UEDMaster）。命中「数字化门店」「服务指南针」，或需求属于 BI 后台、报表、看板、指标卡、数据可视化时，以 references/digital-store-spec.md 为执行依据，取值来自 digital-store-tokens.css，技术栈为 Arco 组件 + 覆盖 token。生成的 demo 一律窗口自适应：流式布局 + 响应式断点，内容区高度溢出时自动出现滚动条，不按设计稿固定尺寸缩放。同时保留通用能力：对没有专门设计系统的产品直接生成可交互 demo 原型，或对已有 demo（HTML / 前端页面）做排版、留白、层级、色彩、动效、微交互和响应式的升级，并截图自检、持续迭代。当用户要「做个 demo / 原型 / 高保真页面」「把这个原型优化得更好看 / 更专业」「UI 效果差，帮我改」时使用。
 metadata:
-  version: 0.7.0
+  version: 0.8.0
   upstream: Leonxlnx/taste-skill · skills/redesign-skill（MIT）
 ---
 
@@ -12,9 +12,11 @@ metadata:
 
 | 需求类型 | 执行依据 | 栅格节奏 |
 |---|---|---|
-| 关键词含「数字化门店」 | `references/digital-store-spec.md` | 边距 / 栅格槽 **8px** |
-| 关键词含「服务指南针」，或两者都无但确属 BI 后台、报表、看板 | 同上 | 边距 / 栅格槽 **12px** |
+| 关键词含「数字化门店」 | `references/digital-store-spec.md` | 边距 / 栅格槽 / 卡片内距 **8px** |
+| 关键词含「服务指南针」，或两者都无但确属 BI 后台、报表、看板 | 同上 | 边距 / 栅格槽 / 卡片内距 **12px** |
 | 通用 demo、落地页、无设计系统的产品 | 本文件下方通用底线 | — |
+
+卡片内距固定**上下左右四边同值**：数字化门店（核心指标达成 / 财务开单 / 全渠道销售 / 全渠道库存等）白卡 `8px`；服务指南针及其他报表类页面白卡 `12px`。两种场景不要混用。
 
 命中前两行时，**先读 `digital-store-spec.md`，再读 `digital-store-tokens.css`**，然后才开始写页面。颜色、字号、行高、间距、圆角、阴影、层级一律从 tokens 取值，不另估。技术栈是 **Arco 组件 + 覆盖 token**，不手写组件、不换组件库。
 
@@ -24,11 +26,13 @@ metadata:
 
 图标走**尺寸包 + 图标库**两层：尺寸 10/12/14/16/18/20/22/24/32/48 十档，全部 1:1；图标库 9 分类 **492 枚**，文件随 skill 一起分发，路径 `references/icons/<分类>/<名称>.svg`（arrow 36、cover 27、edit 43、general 90、interactive 39、media 16、supplement 202、tips 17、trademark 22）。**缺图标先在这 492 枚里按分类找，不要凭记忆重画**；取到的 SVG 直接内联（`fill: currentColor`）或作为 `<img>` 引用，不要转 iconfont。默认填充 `#4E5969`（= `--text-color-text-2`）**不是品牌绿**，需要绿时用 `primary-7`。导出的 SVG 是填充路径不是 stroke，线宽随尺寸等比缩——**10/12 两档会发虚，慎用**。实现统一 inline SVG + `fill: currentColor` + `viewBox="0 0 24 24"`，尺寸只由 CSS 控；不要一份颜色导一个文件，也不要用 iconfont / emoji 顶替。详见第 9.9 节。
 
-**页面模板 / 多页面 demo：缩略图就是页面本身，页面只拿组件库组件拼。** 做「目录 + 点击进详情」的模板区时：
+**页面模板 / 多页面 demo：缩略图 = 同一份页面 DOM 的快照，打开的页面按视口自适应，且只拿组件库组件拼。** 做「目录 + 点击进详情」的模板区时：
 
 - 页面里的每个区块都取第 9 节与第 12 节的现有组件——指标卡 `.ind`、SideNav `.sn`、页签 `.page-tabs`、FilterBar `.filterbar` + DateSelected `.u-dsel` + select + 按钮 `.btn`、趋势图 `.tc`、AI 辅助分析 `.u-ai`、表格 `.data-table` + 标签 `.tag`。**不允许**自造简化版（灰块顶指标卡、两条线顶图表、纯文字顶 AI）——那会让 demo 与组件规范裂成两套外观。
-- **缩略图 = 同一份页面 DOM 的等比缩放**，不是手绘骨架：`.tpl-thumb-win` 内放 1440×900 的 `.tpl-thumb-doc`，`transform: scale(容器宽/1440)` + `origin 0 0`，内容由与预览页**完全相同的拼装函数**生成，仅把图表从 ECharts 换成 SVG 以免 canvas 缩小发虚。
-- 交互：点缩略图 → 目录被整页替换（页面全宽挂载，不是弹窗 / iframe），左下角悬浮「返回」按钮回目录，`Esc` 也可返回。详见第 10.4 节。
+- **缩略图 = 同一份页面 DOM 的等比缩放**（目录里的「图」），不是手绘骨架：`.tpl-thumb-win` 内放 1440×900 的 `.tpl-thumb-doc`，`transform: scale(容器宽/1440)` + `origin 0 0`，内容由与预览页**完全相同的拼装函数**生成，仅把图表从 ECharts 换成 SVG 以免 canvas 缩小发虚。**固定 1440×900 只属于缩略图**，不代表打开后的页面也要按设计稿尺寸定格。
+- 交互：点缩略图 → 目录被整页替换（页面全宽挂载、**按视口自适应**，不是弹窗 / iframe，也不是 1440 设计稿整体缩放），左下角悬浮「返回」按钮回目录，`Esc` 也可返回。详见第 10.4–10.5 节。
+
+**所有 demo 都必须窗口自适应，这是硬约束。** 浏览器窗口才是画布，1440×900、1222/1238/1254 这类数字只作设计参考基线：不得写成固定宽高，不得用 `transform: scale()` 缩放整页，不得用 `overflow:hidden` 把超出视口的内容裁掉。宽度流式（flex / grid + `min-width:0`，断点 1240 / 1024 / 760 / 560）：指标卡 `repeat(auto-fill,minmax(230px,1fr))`，筛选器可换行、select 可收缩，≤1024 侧栏转抽屉（遮罩 + `Esc` 关闭），≤760 筛选器 2×2、表格横向滚动。高度以 `100dvh` 为顶：桌面 `height:calc(100dvh - 顶栏)` + 内容区 `flex:1;min-height:0;overflow:auto`，**内容超出时自动出现滚动条、保证完整可见**；≤1024 回到文档流自然滚动。图表按容器实测尺寸绘制（`clientWidth/clientHeight`），`resize` 防抖重绘，不用固定 viewBox 拉伸。详见 `digital-store-spec.md` 第 10.5 节。
 
 优先级：**用户明确指令 > `digital-store-spec.md` > `references/web-baseline.md` > 本文件标记区内的通用审计**。上游清单是启发式审美建议，规范是交付硬约束，两者冲突时规范赢（例如上游说「别用左侧边栏导航」「别用三栏等宽卡片」，这在 BI 后台是正确的，按规范做）。
 
@@ -59,7 +63,7 @@ metadata:
 - 每个小样附一句取舍说明，并标出你推荐哪一个。
 - 范围已明确、用户给了方向、或说「直接做」「你来定」时，不停下来，直接做一版。无法等待用户回复时（如自动运行），按「标准优化」幅度做一版，最后说明还有哪些方向可选。
 
-两种用法都要**截图自检**：在浏览器里打开页面，至少看桌面宽屏、窄屏与移动宽度，以及弹层、抽屉、空状态等主要状态；看图找问题、修正、再截图，直到没有明显可提升之处。不凭代码想象效果，不以「没有报错」代替「看起来对」。自检时同时对照 `references/web-baseline.md` 的交付底线（点击区域、移动端输入、状态不只靠颜色、长内容、深色主题等）。命中数字化门店场景时，另按 `digital-store-spec.md` 第 13 节的 16 条硬规则逐项检查——那 16 条写的是本规范最容易翻车的地方（红好蓝差、品牌色分档、圆角只有 4/8、开发模式、Tab 层级、筛选器栏与控件高度、图标上色方式等）。
+两种用法都要**截图自检**：在浏览器里打开页面，至少看桌面宽屏、窄屏与移动宽度，以及弹层、抽屉、空状态等主要状态；看图找问题、修正、再截图，直到没有明显可提升之处。不凭代码想象效果，不以「没有报错」代替「看起来对」。自检时同时对照 `references/web-baseline.md` 的交付底线（点击区域、移动端输入、状态不只靠颜色、长内容、深色主题等）。命中数字化门店场景时，另按 `digital-store-spec.md` 第 13 节的 19 条硬规则逐项检查——那 19 条写的是本规范最容易翻车的地方（红好蓝差、品牌色分档、圆角只有 4/8、开发模式、Tab 层级、筛选器栏与控件高度、图标上色方式、窗口自适应与内容区滚动等）。
 
 ## 品牌强调色（仅限通用场景）
 
@@ -132,9 +136,9 @@ Check for these problems and fix them:
 
 - **Everything centered and symmetrical.** Break symmetry with offset margins, mixed aspect ratios, or left-aligned headers over centered content.
 - **Three equal card columns as feature row.** This is the most generic AI layout. Replace with a 2-column zig-zag, asymmetric grid, horizontal scroll, or masonry layout.
-- **Using `height: 100vh` for full-screen sections.** Replace with `min-height: 100dvh` to prevent layout jumping on mobile browsers (iOS Safari viewport bug).
+- **Using `height: 100vh` for full-screen sections.** Replace with `min-height: 100dvh` to prevent layout jumping on mobile browsers (iOS Safari bug). BI 框架例外：可以用 `height: calc(100dvh - 顶栏)` 固定框架高度，但内容区必须 `min-height:0; overflow:auto` 接管滚动（见 10.5）。
 - **Complex flexbox percentage math.** Replace with CSS Grid for reliable multi-column structures.
-- **No max-width container.** Add a container constraint (around 1200-1440px) with auto margins so content doesn't stretch edge-to-edge on wide screens.
+- **No max-width container.** Add a container constraint (around 1200-1440px) with auto margins so content doesn't stretch edge-to-edge on wide screens. **例外：命中数字化门店 / 服务指南针的 BI 后台页面**——这类页面铺满视口、宽度流式，不加 `max-width`（见 `digital-store-spec.md` 10.5）。
 - **Cards of equal height forced by flexbox.** Allow variable heights or use masonry when content varies in length.
 - **Uniform border-radius on everything.** Vary the radius: tighter on inner elements, softer on containers.
 - **No overlap or depth.** Elements sit flat next to each other. Use negative margins to create layering and visual depth.
