@@ -3,7 +3,7 @@
 海信 **数字化门店 / 服务指南针 PC 端 BI 后台**的页面生成与视觉优化 skill（内部代号 UEDMaster）。
 给一句话需求，它负责读规范、取 token、按组件库拼页面、过自检；也负责把已有 demo 改得更好看。
 
-- 版本：**0.7.0**
+- 版本：**0.8.0**
 - 技术栈：**Arco Design 组件 + 覆盖 token**（不手写组件、不换组件库）
 - 体积：约 **0.7 MB**，无 npm 依赖，纯 Markdown / CSS / SVG
 
@@ -15,14 +15,16 @@
 
 | 你的需求 | 它怎么做 | 执行依据 |
 |---|---|---|
-| 数字化门店、服务指南针的 BI 页面（报表、看板、指标卡、趋势分析） | 按设计规范生成页面，颜色 / 字号 / 间距 / 圆角 / 阴影全部从 token 取值 | `references/digital-store-spec.md` + `references/digital-store-tokens.css` |
+| 数字化门店、服务指南针的 BI 页面（报表、看板、指标卡、趋势分析） | 复制多页模板，改 `MENU` / 页面数据与渲染函数；颜色 / 字号 / 间距 / 圆角 / 阴影全部从 token 取值 | `references/template/app-shell.html` + `references/digital-store-tokens.css` |
 | 没有设计系统的通用 demo、落地页 | 走通用审美审计（排版 / 配色 / 布局 / 交互状态 / 文案） | `SKILL.md` 末尾的上游清单 + `references/web-baseline.md` |
 
 命中文档类需求时，它会自动处理这些事，**你不用指定**：
 
 - **栅格节奏**：数字化门店 8px、服务指南针 / 一般 BI 报表 12px
 - **开发模式**：说「QBI」用 QBI 规格（指标卡统一 252 宽、实心查询按钮）；说「自开发」用自开发规格；都没说默认自开发，并在交付说明里写一句假设
-- **组件选型**：指标卡、趋势图、AI 辅助分析、筛选器、页签、侧导航、表格、标签，全部取组件库现成组件，不自造简化版
+- **组件选型**：直接复制 `references/template/app-shell.html`，指标卡、趋势图、AI 辅助分析、筛选器、页签、侧导航、表格、标签都取模板现成实现，不自造简化版
+- **模板包**：`app-shell.html` 是可运行的多页模板（首页入口 + 核心指标达成 + 财务开单），改 `MENU`、`state`、`homeHtml()` / `pageHtml()` / `fbHtml()` 与 `TAB_META` 即出页；`data-scene` 切 8 / 12px，`data-mode` 切自开发 / QBI；`blocks.md` 供已有页面增量加区块
+- **系统名与菜单**：数字化门店 / 服务指南针按场景自动命名，其他系统在 `data-brand` 填名称（缺失会提示）；导航菜单与页签按需求重写，不沿用模板里的营销菜单
 - **自检**：20 条交付清单 + 第 13 节 16 条硬规则（红好蓝差、品牌色分档、圆角只有 4/8、Tab 层级、控件高度等）
 - **图标**：缺图标先在 `references/icons/` 的 492 枚里找，不凭记忆重画
 
@@ -46,6 +48,10 @@ DigitalShop/
     ├── text-style-variables-mode-1.css   # Figma 文字样式导出
     ├── pt-container-head-default.svg     # AI 辅助分析头部底色
     ├── pt-container-title.svg            # AI 辅助分析渐变标题
+    ├── template/                         # 模板包：组件的唯一实现
+    │   ├── app-shell.html                # 多页模板：首页 + 核心指标达成 + 财务开单（可运行）
+    │   ├── components.css                # 指标卡 / 按钮 / 表格 / AI 等全部组件外观
+    │   └── blocks.md                     # 四类区块的可复制片段（自开发 / QBI）
     ├── logo/
     │   └── hisense.svg                   # 海信 Logo 母版：144 × 23、单色 #00AAA6（8 条填充路径，无描边/渐变）
     └── icons/                            # 图标库：9 分类 492 枚 SVG（≈0.5 MB）
@@ -109,7 +115,7 @@ git -C "$env:TEMP\DigitalShop-skill" log --oneline -3
 
 - **目录名保持 `DigitalShop`**。Qoder 里显示的 skill 名就是目录名；`SKILL.md` frontmatter 里的 `name: ued-master` 是历史命名，两者不一致是正常的，不要只改一边。
 - **不要改动 `SKILL.md` 的 frontmatter**（`name` / `description` 决定什么时候被命中）。
-- `references/` 必须和 `SKILL.md` 一起放进去，缺了它会找不到规范与图标。
+- `references/` 必须和 `SKILL.md` 一起放进去，缺了它会找不到规范、模板与图标。
 
 ### 方式三：跨项目使用
 
@@ -161,7 +167,7 @@ git -C "$env:TEMP\DigitalShop-skill" log --oneline -3
 2. 它一次性追问关键模糊点，最多 1–2 轮。
 3. 它先产出**界面结构说明**：页面框架、区块顺序、关键组件 / 取值 / 交互。
 4. 你确认或直接改结构（增删区块、切换模式）。
-5. 它按结构生成，并过自检后交付。
+5. 它复制 `references/template/app-shell.html` 整页，改 `MENU`、页面数据与渲染函数，缺区块时从 `blocks.md` 取，再自检交付。
 
 ### 4. 常用请求 → 命中哪个页面模板
 
@@ -173,7 +179,7 @@ git -C "$env:TEMP\DigitalShop-skill" log --oneline -3
 | 行业份额、带一级 tab 与悬浮球的分析页，自开发 | 市场份额（`5313:9723`） |
 | 门店全生命周期长页面（冻结列） | 门店生命周期（`5313:10682`） |
 
-匹配度低时，它会按规范自主拼装——但仍然只用 Arco 组件 + token，不自造组件。
+匹配度低时，它仍以模板包为底，改 `MENU` 与页面函数，不自造组件。
 
 ### 5. 想先看看长什么样
 
@@ -194,7 +200,10 @@ A：不行。颜色、字号、间距、圆角、阴影、层级一律从 `refer
 A：先按 9 个分类在 `references/icons/` 里找；确实没有，再按 48 画布、填充路径（非 stroke）、`fill: currentColor` 的规则补一枚，并放进对应分类目录，保持命名 kebab-case。
 
 **Q：为什么页面里的图表不能直接写 ECharts 配置就完事？**
-A：页面只做拼装——趋势图取 `.tc`、AI 辅助分析取 `.u-ai`、指标卡取 `.ind`。组件改一次，页面和缩略图同步变；自己写一套会让 demo 与规范裂成两套外观。
+A：页面只做拼装——趋势图取 `.chart`、AI 辅助分析取 `.u-ai`、指标卡取 `.ind`。组件改一次，所有页面同步变；自己写一套会让 demo 与规范裂成两套外观。
+
+**Q：规范 md 里已经有尺寸表，为什么不直接照着拼？**
+A：尺寸表只写数值，不写 DOM 与状态。照表重拼等于每次重做一份实现，很快会和模板差出第二套外观。新页面一律复制 `references/template/`，md 只用于核对取值与规则。
 
 **Q：只想要规范文档，不生成页面？**
 A：直接说「按规范评审这个页面」或「解释第 9 节图标规则」，它会去读 `references/digital-store-spec.md` / `references/guide.md` 回答，不动你的代码。
@@ -205,10 +214,10 @@ A：直接说「按规范评审这个页面」或「解释第 9 节图标规则�
 
 | 项 | 值 |
 |---|---|
-| 版本 | 0.7.0 |
+| 版本 | 0.8.0 |
 | 仓库 | <https://github.com/goodz857805-sudo/DigitalShop> |
 | 规范规模 | 74 章 / 64 个组件条目 / 5 个页面模板 / 492 枚图标 |
 | 上游 | [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `skills/redesign-skill`（MIT），复用范围与哈希见 `UPSTREAM.md` |
 | 许可 | 上游正文 MIT，见 `LICENSE-upstream.txt`；本 skill 增补部分随本目录分发 |
 
-改动规范时：**先改 `references/digital-store-spec.md` 与 `digital-store-tokens.css`，再改页面实现**，并在 `references/guide.md` 的更新日志补一条。页面里不写死色值与尺寸。
+改动规范时：**先改 `references/digital-store-spec.md` 与 `digital-store-tokens.css`，再改 `references/template/`（components.css / app-shell.html / blocks.md），最后改具体页面**，并在 `references/guide.md` 的更新日志补一条。页面里不写死色值与尺寸。
